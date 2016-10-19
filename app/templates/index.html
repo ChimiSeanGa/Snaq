@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<title>Snaq</title>
+{#<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">#}
+<div class=page>
+    <h1>Snaq</h1>
+    {% block body %}
+    <p>Hello, world!</p>
+    <div class="fb-login-button" data-size='xlarge' data-scope="public_profile">
+        Sign in
+    </div>
+    {% endblock %}
+</div>
+{% endblock %}
