@@ -1,12 +1,23 @@
 import os
 
 from app import app
-from flask import render_template
+from flask import render_template, request
 
-from facebook import get_user_from_cookie, GraphAPI
+import fbconsole
 from .config import FB_APP_ID
 
+FFS_GROUP_ID = '401906879833440'
+
 @app.route('/')
+
+@app.route('/authorize')
+def authorize_fb():
+    fbconsole.APP_ID = FB_APP_ID
+    fbconsole.AUTH_SCOPE = ['public_profile']
+    fbconsole.authenticate()
+
+    return "Good to go! <a href='/getposts'>Click here!</a>"
+
 @app.route('/index')
 def index():
     return render_template('index.html', app_id = os.environ.get("FB_APP_ID"))
@@ -14,18 +25,14 @@ def index():
 @app.route('/group')
 def group():
     # User access token expires after a couple hours; need to add login
-    graph = GraphAPI('EAACEdEose0cBALHtWmGPrk2hzcAj5Onj2RZBZBy6zGIkNVgjvvt043VmJwCBZBLhnrGZB9YVJy6bsZCu4WgqMAxowSqLKyGurBMjCN0UjZAhI3f3GJQ8vXKDgBpziZALniCQSsx8uZCvHWFW0wH1BYdUTuIiam0nQX9D7hDz932qjAZDZD')
-    ffs_group_id = '401906879833440'
-    ip_group_id = '341686389286734'
-
-    posts = graph.get_object(ffs_group_id + '/feed')
+    posts = fbconsole.get('/' + FFS_GROUP_ID + '/feed')
 
     postNum = 1
     curPost = ''
-    
+
     for post in posts['data']:
         curPost += '<br>POST #' + str(postNum) + '<br>'
-		
+        
         curPost += post['message']
 
         curPost += '<br>'
@@ -35,8 +42,8 @@ def group():
         except KeyError:
             curPost += 'No picture included'
 
-            curPost += '<br>'
-            postNum += 1
+        curPost += '<br>'
+        postNum += 1
 
-        return curPost
+    return curPost
 
