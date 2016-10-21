@@ -3,6 +3,8 @@ click==6.6
 facebook-sdk==2.0.0
 fbconsole==0.4
 Flask==0.11.1
+Flask-DotEnv==0.1.0
+Flask-SQLAlchemy==2.1
 itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==0.23
@@ -10,5 +12,6 @@ mechanize==0.2.5
 poster==0.8.1
 requests==2.11.1
 six==1.10.0
+SQLAlchemy==1.1.2
 web.py==0.38
 Werkzeug==0.11.11
