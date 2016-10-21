@@ -4,9 +4,11 @@ from flask import Flask, abort, request
 app = Flask(__name__)
 
 FFS_GROUP_ID = '401906879833440'
+APP_ID = '1821863698046613'
 
 @app.route('/authorize')
 def authorize_facebook():
+	fbconsole.APP_ID = APP_ID
 	fbconsole.AUTH_SCOPE = ['public_profile']
 	fbconsole.authenticate()
 
