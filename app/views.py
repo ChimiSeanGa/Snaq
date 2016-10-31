@@ -12,7 +12,7 @@ FB_GRAPH = 'https://graph.facebook.com/'
 
 @app.route('/')
 def home():
-    return '<a href="/authorize">Login</a>'
+    return render_template('index.html')
 
 @app.route('/authorize')
 def authorize_fb():
@@ -20,11 +20,13 @@ def authorize_fb():
     fbconsole.AUTH_SCOPE = ['public_profile']
     fbconsole.authenticate()
 
-    return "Good to go! <a href='/group'>Click here!</a>"
+    return render_template('authorize.html')
 
 @app.route('/group')
 def getposts():
-    posts = json.loads(urllib2.urlopen(FB_GRAPH + FFS_GROUP_ID + "/feed?access_token=" + fbconsole.ACCESS_TOKEN + "&fields=message,picture").read())
+    posts = json.loads(urllib2.urlopen(FB_GRAPH + FFS_GROUP_ID + 
+        "/feed?access_token=" + fbconsole.ACCESS_TOKEN + 
+        "&fields=message,picture").read())
 
     postNum = 1
     curPost = ''
