@@ -28,23 +28,19 @@ def getposts():
         "/feed?access_token=" + fbconsole.ACCESS_TOKEN + 
         "&fields=message,picture").read())
 
-    postNum = 1
-    curPost = ''
+    outPosts = []
+    postNum = 0
 
     for post in posts['data']:
-        curPost += '<br>POST #' + str(postNum) + '<br>'
-        
-        curPost += post['message']
-
-        curPost += '<br>'
+        msg = post['message']
 
         try:
-            curPost += '<img src="' + post['picture'] + '">'
+            pic = post['picture']
         except KeyError:
-            curPost += 'No picture included'
+            pic = 'NPI'
 
-        curPost += '<br>'
+        outPosts.append({'message': msg, 'picture': pic})
         postNum += 1
 
-    return curPost
+    return render_template('group.html', posts=outPosts)
 
