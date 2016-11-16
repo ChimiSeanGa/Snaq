@@ -1,37 +1,73 @@
+#----------------------------------------
+# facebook authentication
+#----------------------------------------
+
 import os
 
+from flask import url_for, request, session, redirect, render_template
+from flask_oauth import OAuth
 from app import app
-from flask import render_template, request
-import urllib2, json
-
-import fbconsole
-# from .config import FB_APP_ID, FFS_GROUP_ID
+from .config import *
 
 FFS_GROUP_ID = '401906879833440'
-FB_GRAPH = 'https://graph.facebook.com/'
 
-@app.route('/')
-def home():
+""" FACEBOOK AUTHENTICATION """
+oauth = OAuth()
+facebook = oauth.remote_app('facebook',
+    base_url='https://graph.facebook.com/',
+    request_token_url=None,
+    access_token_url='/oauth/access_token',
+    authorize_url='https://www.facebook.com/dialog/oauth',
+    consumer_key=FB_APP_ID,
+    consumer_secret=FB_APP_SECRET,
+    #request_token_params={'scope': ('email, ')}
+)
+
+@facebook.tokengetter
+def get_facebook_token():
+    return session.get('facebook_token')
+
+def pop_login_session():
+    session.pop('logged_in', None)
+    session.pop('facebook_token', None)
+
+@app.route("/")
+def index():
     return render_template('index.html')
 
-@app.route('/authorize')
-def authorize_fb():
-    fbconsole.APP_ID = '1821863698046613'
-    fbconsole.AUTH_SCOPE = ['public_profile']
-    fbconsole.authenticate()
+@app.route("/facebook_login")
+def facebook_login():
+    return facebook.authorize(callback=url_for('facebook_authorized',
+        next=request.args.get('next'), _external=True))
 
-    return render_template('authorize.html')
+@app.route("/facebook_authorized")
+@facebook.authorized_handler
+def facebook_authorized(resp):
+    next_url = request.args.get('next') or url_for('index')
+    if resp is None or 'access_token' not in resp:
+        return redirect(next_url)
+
+    session['logged_in'] = True
+    session['facebook_token'] = (resp['access_token'], '')
+
+    return redirect(next_url)
+
+@app.route("/logout")
+def logout():
+    pop_login_session()
+    return redirect(url_for('index'))
+""" END FACEBOOK AUTHENTICATION """
 
 @app.route('/group')
 def getposts():
-    posts = json.loads(urllib2.urlopen(FB_GRAPH + FFS_GROUP_ID + 
-        "/feed?access_token=" + fbconsole.ACCESS_TOKEN + 
-        "&fields=message,picture").read())
+    posts = facebook.get(FFS_GROUP_ID + '/feed?fields=message,picture')
 
     outPosts = []
     postNum = 0
 
-    for post in posts['data']:
+    print "posts.data", posts.data
+    for post in posts.data['data']:
+        print "post", post
         msg = post['message']
 
         try:
@@ -41,6 +77,4 @@ def getposts():
 
         outPosts.append({'message': msg, 'picture': pic})
         postNum += 1
-
     return render_template('group.html', posts=outPosts)
-

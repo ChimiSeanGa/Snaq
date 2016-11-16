@@ -5,7 +5,11 @@
 <div class=page>
     {% block body %}
     <div>
-        <a href='/authorize'>Login</a>
+        {% if not session.logged_in %}
+        <a href='/facebook_login'>Login</a>
+        {% else %}
+        <a href='/logout'>Logout</a>
+        {% endif %}
     </div>
     {% endblock %}
 </div>
