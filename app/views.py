@@ -72,14 +72,14 @@ def getposts():
         try:
             msg = post['message']
         except KeyError:
-            msg = 'NMS'
+            msg = None
 
         try:
             pic = post['picture']
         except KeyError:
-            pic = 'NPI'
+            pic = None
 
-        if (msg != 'NMS' and pic != 'NPI'):
+        if (msg != None and pic != None):
             outPosts.append({'message': msg, 'picture': pic})
             postNum += 1
     return render_template('group.html', posts=outPosts)
