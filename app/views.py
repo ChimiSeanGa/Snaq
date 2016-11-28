@@ -65,16 +65,21 @@ def getposts():
     outPosts = []
     postNum = 0
 
-    print "posts.data", posts.data
+    # print "posts.data", posts.data
     for post in posts.data['data']:
-        print "post", post
-        msg = post['message']
+        # print "post", post
+
+        try:
+            msg = post['message']
+        except KeyError:
+            msg = 'NMS'
 
         try:
             pic = post['picture']
         except KeyError:
             pic = 'NPI'
 
-        outPosts.append({'message': msg, 'picture': pic})
-        postNum += 1
+        if (msg != 'NMS' and pic != 'NPI'):
+            outPosts.append({'message': msg, 'picture': pic})
+            postNum += 1
     return render_template('group.html', posts=outPosts)

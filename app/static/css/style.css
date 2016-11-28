@@ -1,0 +1,28 @@
+body {
+
+}
+
+.sale-wrapper {
+	background-color: #ddd;
+	margin-bottom: 50px;
+	font-family: 'Arial';
+	height: 120px;
+	width: 100%;
+}
+
+.sale-wrapper p {
+	float: left;
+	display: inline-block;
+	width: 80%;
+	margin-left: 30px;
+}
+
+.sale-wrapper .sale-image {
+	float: left;
+	height: inherit;
+	display: inline-block;
+}
+
+.sale-image img {
+	height: inherit;
+}
