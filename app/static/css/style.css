@@ -6,25 +6,27 @@ body {
 	background-color: #ddd;
 	margin-bottom: 50px;
 	font-family: 'Arial';
-	height: 120px;
+	height: auto;
+	overflow: auto;
 	width: 100%;
+
 }
 
-.sale-wrapper p {
+.sale-wrapper .item-info {
 	float: left;
 	display: inline-block;
 	width: 80%;
-	margin-left: 30px;
+	margin-left: 20px;
 }
 
 .sale-wrapper .sale-image {
 	float: left;
-	height: inherit;
-	display: inline-block;
+
 }
 
 .sale-image img {
-	height: inherit;
+	margin: 20px 0px 20px 10px;
+	border: 1px solid black;
 }
 
 .close-icon {

@@ -12,18 +12,20 @@
 						<img src="{{post['picture']}}" />
 					</div>
 				{% endif %}
-				{% if post['item'] %}
-					<p>Item: {{post['item']}}</p>
-				{% endif %}
-                                {% if post['price'] %}
-                                	<p>Price: {{post['price']}}</p>
-                                {% endif %}
-                                {% if post['location'] %}
-                                	<p>Location: {{post['location']}}</p>
-                                {% endif %}
-                                {% if post['description'] %}
-                                	<p>Description: {{post['description']}}</p>
-                                {% endif %}
+				<div class='item-info'>
+					{% if post['item'] %}
+						<p><b>{{post['item']}}</b></p>
+					{% endif %}
+		           	{% if post['price'] %}
+		           		<p style='color:green'>{{post['price']}}</p>
+		           	{% endif %}
+		           	{% if post['location'] %}
+		           		<p style='color:gray'>{{post['location']}}</p>
+		           	{% endif %}
+		           	{% if post['description'] %}
+		           		<p>{{post['description']}}</p>
+		           	{% endif %}
+	          	</div>
 				<div class='close-icon'>
 					<img src="{{ url_for('static', filename='images/close.png') }}"/>
 				</div>
