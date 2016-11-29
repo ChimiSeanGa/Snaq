@@ -24,10 +24,20 @@
                                 {% if post['description'] %}
                                 	<p>Description: {{post['description']}}</p>
                                 {% endif %}
+				<div class='close-icon'>
+					<img src="{{ url_for('static', filename='images/close.png') }}"/>
+				</div>
 			</div>
 		{% endfor %}
 
 	</div>
 	{% endblock %}
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+$(".close-icon").click(function() {
+	$(this).closest("div.sale-wrapper").slideUp();
+});
+</script>
 {% endblock %}

@@ -26,3 +26,14 @@ body {
 .sale-image img {
 	height: inherit;
 }
+
+.close-icon {
+	float: right;
+	margin-top: 7px;
+	margin-right: 7px;
+}
+
+.close-icon img {
+	width: 20px;
+	height: auto;
+}
