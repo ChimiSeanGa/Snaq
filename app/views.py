@@ -4,10 +4,11 @@
 
 import os
 
-from flask import url_for, request, session, redirect, render_template
-from flask_oauth import OAuth
+from flask import url_for, request, session, redirect, render_template, flash
+from flask_oauth import OAuth, OAuthException
 from app import app
 from .config import *
+from string_parser import parse_sale
 
 FFS_GROUP_ID = '401906879833440'
 
@@ -60,26 +61,25 @@ def logout():
 
 @app.route('/group')
 def getposts():
-    posts = facebook.get(FFS_GROUP_ID + '/feed?fields=message,picture')
+    try:
+        posts = facebook.get(FFS_GROUP_ID + '/feed?fields=message,picture&limit=10')
 
-    outPosts = []
-    postNum = 0
+        outPosts = []
+        postNum = 0
 
-    # print "posts.data", posts.data
-    for post in posts.data['data']:
-        # print "post", post
-
-        try:
-            msg = post['message']
-        except KeyError:
-            msg = 'NMS'
-
-        try:
-            pic = post['picture']
-        except KeyError:
-            pic = 'NPI'
-
-        if (msg != 'NMS' and pic != 'NPI'):
-            outPosts.append({'message': msg, 'picture': pic})
-            postNum += 1
-    return render_template('group.html', posts=outPosts)
+        # print "posts.data", posts.data
+        for post in posts.data['data']:
+            # print "post", post
+            msg = post.get('message')
+            pic = post.get('picture')
+            #print "msg", msg
+            parsed = parse_sale(msg)
+            #print "parsed", parsed
+            if (parsed):
+                parsed['picture'] = pic
+                outPosts.append(parsed)
+                postNum += 1
+        return render_template('group.html', posts=outPosts)
+    except OAuthException:
+        flash('Authentication Error')
+        return redirect(url_for('index'))

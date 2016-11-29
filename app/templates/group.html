@@ -7,14 +7,23 @@
 	<div>
 		{% for post in posts %}
 			<div class='sale-wrapper'>
-				{% if post['picture'] != 'NPI' %}
+				{% if post['picture'] %}
 					<div class='sale-image'>
 						<img src="{{post['picture']}}" />
 					</div>
 				{% endif %}
-				{% if post['message'] != 'NMS' %}
-					<p>{{post['message']}}</p>
+				{% if post['item'] %}
+					<p>Item: {{post['item']}}</p>
 				{% endif %}
+                                {% if post['price'] %}
+                                	<p>Price: {{post['price']}}</p>
+                                {% endif %}
+                                {% if post['location'] %}
+                                	<p>Location: {{post['location']}}</p>
+                                {% endif %}
+                                {% if post['description'] %}
+                                	<p>Description: {{post['description']}}</p>
+                                {% endif %}
 			</div>
 		{% endfor %}
 
