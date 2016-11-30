@@ -67,13 +67,16 @@ def getposts():
         outPosts = []
         postNum = 0
 
-        # print "posts.data", posts.data
+        print "posts.data", posts.data
         for post in posts.data['data']:
             # print "post", post
             msg = post.get('message')
             pic = post.get('picture')
             #print "msg", msg
-            parsed = parse_sale(msg)
+            if (msg):
+                parsed = parse_sale(msg)
+            else:
+                parsed = None
             #print "parsed", parsed
             if (parsed):
                 parsed['picture'] = pic

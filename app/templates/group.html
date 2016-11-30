@@ -3,43 +3,43 @@
 <title>Snaq</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
 <div class='page'>
-	{% block body %}
-	<div>
-		{% for post in posts %}
-			<div class='sale-wrapper'>
-				{% if post['picture'] %}
-					<div class='sale-image'>
-						<img src="{{post['picture']}}" />
-					</div>
-				{% endif %}
-				<div class='item-info'>
-					{% if post['item'] %}
-						<p><b>{{post['item']}}</b></p>
-					{% endif %}
-		           	{% if post['price'] %}
-		           		<p style='color:green'>{{post['price']}}</p>
-		           	{% endif %}
-		           	{% if post['location'] %}
-		           		<p style='color:gray'>{{post['location']}}</p>
-		           	{% endif %}
-		           	{% if post['description'] %}
-		           		<p>{{post['description']}}</p>
-		           	{% endif %}
-	          	</div>
-				<div class='close-icon'>
-					<img src="{{ url_for('static', filename='images/close.png') }}"/>
-				</div>
-			</div>
-		{% endfor %}
+    {% block body %}
+    <div>
+        {% for post in posts %}
+            <div class='sale-wrapper'>
+                {% if post['picture'] %}
+                    <div class='sale-image'>
+                        <img src="{{post['picture']}}" />
+                    </div>
+                {% endif %}
+                <div class='item-info'>
+                    {% if post['item'] %}
+                        <p><b>{{post['item']}}</b></p>
+                    {% endif %}
+                    {% if post['price'] %}
+                        <p style='color:green'>{{post['price']}}</p>
+                    {% endif %}
+                    {% if post['location'] %}
+                        <p style='color:gray'>{{post['location']}}</p>
+                    {% endif %}
+                    {% if post['description'] %}
+                        <p>{{post['description']}}</p>
+                    {% endif %}
+                </div>
+                <div class='close-icon'>
+                    <img src="{{ url_for('static', filename='images/close.png') }}"/>
+                </div>
+            </div>
+        {% endfor %}
 
-	</div>
-	{% endblock %}
+    </div>
+    {% endblock %}
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
 $(".close-icon").click(function() {
-	$(this).closest("div.sale-wrapper").slideUp();
+    $(this).closest("div.sale-wrapper").slideUp();
 });
 </script>
 {% endblock %}
