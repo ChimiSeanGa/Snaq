@@ -9,6 +9,7 @@ from flask_oauth import OAuth, OAuthException
 from app import app
 from .config import *
 from string_parser import parse_sale
+from datetime import datetime
 
 FFS_GROUP_ID = '401906879833440'
 
@@ -62,17 +63,24 @@ def logout():
 @app.route('/group')
 def getposts():
     try:
-        posts = facebook.get(FFS_GROUP_ID + '/feed?fields=message,picture&limit=10')
+        posts = facebook.get(FFS_GROUP_ID + '/feed?fields=message,picture&limit=15')
 
         outPosts = []
         postNum = 0
 
-        print "posts.data", posts.data
+        # print "posts.data", posts.data
         for post in posts.data['data']:
             # print "post", post
+            post_id = post.get('id')
             msg = post.get('message')
             pic = post.get('picture')
             #print "msg", msg
+
+            post_info = facebook.get(post_id + '?fields=created_time,from')
+            date = datetime.strptime(post_info.data.get('created_time'), 
+                '%Y-%m-%dT%H:%M:%S+0000')
+            name = post_info.data.get('from').get('name')
+
             if (msg):
                 parsed = parse_sale(msg)
             else:
@@ -80,9 +88,14 @@ def getposts():
             #print "parsed", parsed
             if (parsed):
                 parsed['picture'] = pic
+                parsed['name'] = name
+                parsed['date'] = date.strftime('%B %d, %Y')
+                parsed['sortDate'] = (date-datetime.fromtimestamp(0)).total_seconds()
+                print parsed['sortDate']
                 outPosts.append(parsed)
                 postNum += 1
-        return render_template('group.html', posts=outPosts)
+        sortPosts = sorted(outPosts, key=lambda p: p['sortDate'], reverse=True)
+        return render_template('group.html', posts=sortPosts)
     except OAuthException:
         flash('Authentication Error')
         return redirect(url_for('index'))

@@ -19,9 +19,24 @@ body {
     margin-left: 20px;
 }
 
+.item-info .item {
+    font-weight: bold;
+}
+
+.item-info .price {
+    color: green;
+}
+
+.item-info .location {
+    color: gray;
+}
+
+.item-info .date {
+    font-size: 12px;
+}
+
 .sale-wrapper .sale-image {
     float: left;
-
 }
 
 .sale-image img {
