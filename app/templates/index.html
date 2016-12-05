@@ -2,15 +2,74 @@
 {% block content %}
 <title>Snaq</title>
 {#<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">#}
-<div class=page>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/login.css') }}">
+<!--<div class=page>-->
     {% block body %}
-    <div>
+    <!--<div>-->
         {% if not session.logged_in %}
-        <a href='/facebook_login'>Login</a>
+            <div class="w3-container">
+              <div class="w3-row">
+                 <a href="javascript:void(0)" onclick="openTabs(event, 'About');">
+                      <div class="w3-third tablink w3-bottombar w3-padding">About</div>
+                  </a>
+                  <a href="javascript:void(0)" onclick="openTabs(event, 'Login');">
+                      <div class="w3-third tablink w3-bottombar w3-border-white w3-padding login">Login</div>
+                  </a>
+                   <a href="javascript:void(0)" onclick="openTabs(event, 'Team');">
+                      <div class="w3-third tablink w3-bottombar w3-padding">Team</div>
+                  </a>
+                </div>
+
+              <div id="About" class="w3-container tabs">
+                <h2>Snaq</h2>
+                <p>&emsp;Snaq is a web application intended to supplement Facebook's
+                Buy and Sell Groups. It will filter sale posts from a group the user is connected to based on the user's set preferences. The sale posts will be presented in an organized manner and properly formatted with the necessary information in order for users to easily find what they need or want.</p>
+              </div>
+
+              <div id="Team" class="w3-container tabs">
+                <h2>Members</h2>
+                    <ul>
+                        <li>Sharon Che</li>
+                        <li>Sean Gonzalez</li>
+                        <li>Liam Kirsh</li>
+                        <li>Alexander Lazar</li>
+                        <li>Justin Tomas</li>
+                        <li>Waylin Wang</li>
+                    </ul>
+              </div>
+
+              <div id="Login" class="w3-container tabs">
+                <div class="container">
+                     <div id="name"><h1>Sna</h1><i class="fa fa-search"></i></div>
+                     <center><a href="/facebook_login" class="btn btn-block btn-social btn-facebook">
+                    <span class="fa fa-facebook"></span>&emsp;&emsp;SIGN IN WITH FACEBOOK</a></center>
+                </div>
+              </div>
+            </div>
+        <!--<a href='/facebook_login'>Login</a>-->
         {% else %}
-        <a href='/logout'>Logout</a>
+            <a href='/logout'>Logout</a>
+            <a href='/group'>Group</a>
         {% endif %}
-    </div>
+    <!--</div>-->
     {% endblock %}
-</div>
+<!--</div>-->
+
+<script>
+
+function openTabs(evt, tabName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("tabs");
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+     tablinks[i].className = tablinks[i].className.replace(" w3-border-white", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.firstElementChild.className += " w3-border-white";
+}
+
+</script>
 {% endblock %}

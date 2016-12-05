@@ -5,11 +5,30 @@
 <div class='page'>
     {% block body %}
     <div>
+        <div class="sidenav">
+            <div id='name'><h1>Sna</h1><i class='fa fa-search snaq-search'></i></div>
+
+            <div id="groups">
+                <h4>Groups</h4>
+
+            </div>
+        </div>
+        <div class="filters">
+            <div class="search">
+                <input id="input-search" type="text" placeholder="Search Item" onkeypress="handle(event)">
+                <button id="search-button" type="submit"><i class="fa fa-search input-search"></i></button>
+            </div>
+
+        </div>
+        <div id="myModal" class="modal">
+            <span class="modal-close">×</span>
+            <img class="modal-content" id="img">
+        </div>
         {% for post in posts %}
-            <div class='sale-wrapper'>
+            <div id="sale-post" class='sale-wrapper'>
                 {% if post['picture'] %}
                     <div class='sale-image'>
-                        <img src="{{post['picture']}}" />
+                        <img class="sale-img" src="{{post['picture']}}" />
                     </div>
                 {% endif %}
                 <div class='item-info'>
@@ -34,15 +53,39 @@
                 </div>
             </div>
         {% endfor %}
-
     </div>
     {% endblock %}
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
-$(".close-icon").click(function() {
-    $(this).closest("div.sale-wrapper").slideUp();
-});
+    $(".close-icon").click(function() {
+        //$(this).closest("div.sale-wrapper").slideUp();
+        $(this).closest("div.sale-wrapper").remove();
+    });
+
+    var modal = document.getElementById("myModal");
+
+    $(".sale-image").click(function() {
+        modal.style.display = "block";
+        var modalImg = document.getElementById("img");
+        modalImg.src = $(this).closest("div.sale-image").find("img.sale-img").attr("src");
+    });
+
+    var span = document.getElementsByClassName("modal-close")[0];
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    modal.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    function handle(e){
+       if(e.keyCode === 13){
+          e.preventDefault();
+          search();
+       }
+    }
 </script>
+
 {% endblock %}
