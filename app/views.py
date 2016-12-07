@@ -12,6 +12,7 @@ from string_parser import parse_sale
 from datetime import datetime
 
 FFS_GROUP_ID = '401906879833440'
+POST_LIMIT = 15
 
 """ FACEBOOK AUTHENTICATION """
 oauth = OAuth()
@@ -63,7 +64,18 @@ def logout():
 @app.route('/group')
 def group():
     try:
-        posts = facebook.get(FFS_GROUP_ID + '/feed?fields=message,picture&limit=15')
+        fields = ['message',
+                  'picture',
+                  'full_picture',
+                  'created_time',
+                  'from',
+                  'permalink_url']
+        req_fields = ",".join(fields)
+        posts = facebook.get(FFS_GROUP_ID + "/feed?"
+                             + "fields="
+                             + req_fields
+                             + "&limit="
+                             + str(POST_LIMIT))
 
         outPosts = []
         postNum = 0
@@ -71,29 +83,25 @@ def group():
         # print "posts.data", posts.data
         for post in posts.data['data']:
             # print "post", post
-            post_id = post.get('id')
             msg = post.get('message')
             pic = post.get('picture')
             #print "msg", msg
 
-            post_info = facebook.get(post_id + '?fields=created_time,from')
-            date = datetime.strptime(post_info.data.get('created_time'), 
-                '%Y-%m-%dT%H:%M:%S+0000')
-            name = post_info.data.get('from').get('name')
-
-            if (msg):
+            created_time = post.get('created_time')
+            if created_time and msg:
+                date = datetime.strptime(post['created_time'], 
+                    '%Y-%m-%dT%H:%M:%S+0000')
                 parsed = parse_sale(msg)
-            else:
-                parsed = None
-            #print "parsed", parsed
-            if (parsed):
-                parsed['picture'] = pic
-                parsed['name'] = name
-                parsed['date'] = date.strftime('%B %d, %Y')
-                parsed['sortDate'] = (date-datetime.fromtimestamp(0)).total_seconds()
-                #print parsed['sortDate']
-                outPosts.append(parsed)
-                postNum += 1
+                if (parsed):
+                    post['item'] = parsed['item']
+                    post['price'] = parsed['price']
+                    post['location'] = parsed.get('location')
+                    post['description'] = parsed['description']
+
+                    post['date'] = date.strftime('%B %d, %Y')
+                    post['sortDate'] = (date - datetime.fromtimestamp(0)).total_seconds()
+                    outPosts.append(post)
+                    postNum += 1
         sortPosts = sorted(outPosts, key=lambda p: p['sortDate'], reverse=True)
         return render_template('group.html', posts=sortPosts)
     except OAuthException:
