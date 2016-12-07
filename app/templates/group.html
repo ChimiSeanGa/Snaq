@@ -37,7 +37,9 @@
                 {% endif %}
                 <div class='item-info'>
                     {% if post['item'] %}
-                        <p class='item'>{{post['item']}}</p>
+                        <a href={{post['permalink_url']}} target="_blank">
+                            <p class='item'>{{post['item']}}</p>
+                        </a>
                     {% endif %}
                     {% if post['price'] %}
                         <p class='price'>{{post['price']}}</p>
