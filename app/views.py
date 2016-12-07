@@ -91,7 +91,7 @@ def group():
                 parsed['name'] = name
                 parsed['date'] = date.strftime('%B %d, %Y')
                 parsed['sortDate'] = (date-datetime.fromtimestamp(0)).total_seconds()
-                print parsed['sortDate']
+                #print parsed['sortDate']
                 outPosts.append(parsed)
                 postNum += 1
         sortPosts = sorted(outPosts, key=lambda p: p['sortDate'], reverse=True)
