@@ -15,8 +15,8 @@ h4 {
     font-weight: bold;
 }
 
-hr:last-child {
-  display:none;
+h5 {
+    color: black;
 }
 
 #name {
@@ -80,6 +80,14 @@ button:hover {
   color: #80d4ff;
 }
 
+#logout {
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    top: 61%;
+    bottom: 0;
+    margin-left: 15px;
+}
 .sale-wrapper {
     position: relative;
     left: 20%;
