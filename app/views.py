@@ -40,7 +40,7 @@ def index():
 @app.route("/facebook_login")
 def facebook_login():
     return facebook.authorize(callback=url_for('facebook_authorized',
-        next=request.args.get('next'), _external=True))
+        next=url_for('group'), _external=True))
 
 @app.route("/facebook_authorized")
 @facebook.authorized_handler
@@ -61,7 +61,7 @@ def logout():
 """ END FACEBOOK AUTHENTICATION """
 
 @app.route('/group')
-def getposts():
+def group():
     try:
         posts = facebook.get(FFS_GROUP_ID + '/feed?fields=message,picture&limit=15')
 
